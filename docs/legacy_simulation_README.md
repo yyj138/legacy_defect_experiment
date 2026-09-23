@@ -5,38 +5,33 @@
 ## 项目结构
 
 ```
-liquid_crystal_experiment/
-├── README.md                     # 项目说明文档
+.
+├── README.md                     # 项目说明（仓库根目录）
 ├── main.py                       # 主脚本（交互式操作，15项功能菜单）
-├── docs/                         # 文档目录
-├── examples/                     # 输出示例和结果
-│   ├── *.png                     # 各种缺陷可视化结果
-│   ├── continuous_simulation/    # 连续介质模拟结果（Fig1-Fig10）
-│   └── keyframes/                # 视频关键帧
-│       ├── video_1/              # 视频1的关键帧
-│       └── ...
-├── results/                      # 备用结果目录
 ├── src/                          # 源代码目录
-│   ├── analysis/                 # 数据分析模块
-│   │   ├── data_analysis.py      # 缺陷结构分析
-│   │   └── video_analysis.py     # 视频分析
 │   ├── core/                     # 核心模块
-│   │   ├── defects.py            # 缺陷生成
-│   │   └── patterns.py           # 液晶排列模式
-│   ├── liquid_crystal/           # 液晶主模块
-│   │   ├── analysis/             # 分析子模块
-│   │   ├── core/                 # 核心子模块
-│   │   └── utils/                # 工具子模块
+│   │   ├── defects.py            # 缺陷生成（分数斯格明子、双极子）
+│   │   └── patterns.py           # 液晶排列模式（R/C/Uniform）
 │   ├── simulation/               # 模拟模块
 │   │   ├── continuous_simulation.py           # 连续介质模拟
 │   │   ├── skyrmion_complete_simulation.py    # 完整斯格明子模拟
 │   │   ├── skyrmion_morphologies.py           # 四种斯格明子形貌对比
 │   │   └── topological_magnetic_structures.py # 拓扑磁性结构
-│   └── visualization/            # 可视化模块
-│       ├── visualization.py      # 缺陷可视化
-│       └── skyrmion_visualization.py         # 斯格明子可视化
-├── tests/                        # 测试文件
-└── videos/                       # 实验视频（视频1.mp4 - 视频11.mp4）
+│   ├── analysis/                 # 数据分析模块
+│   │   ├── data_analysis.py      # 缺陷结构分析
+│   │   └── video_analysis.py     # 视频分析
+│   ├── visualization/            # 可视化模块
+│   │   ├── visualization.py      # 缺陷可视化
+│   │   └── skyrmion_visualization.py  # 斯格明子可视化
+│   └── liquid_crystal/           # 液晶主模块（工具/CLI）
+├── examples/                     # 输出示例和结果
+│   ├── *.png                     # 各种缺陷可视化结果
+│   ├── continuous_simulation/    # 连续介质模拟结果（Fig1-Fig10）
+│   └── keyframes/                # 视频关键帧（video_1/ ... video_11/）
+├── videos/                       # 实验视频（视频1.mp4 - 视频11.mp4）
+└── docs/                         # 文档目录
+    ├── legacy_simulation_README.md  # 本文件
+    └── debug.log                 # 调试日志
 ```
 
 ## 环境要求
@@ -141,4 +136,3 @@ python main.py
 | Fig8 | Fig8_colloid_dynamics.png | 胶体动力学轨迹 |
 | Fig9 | Fig9_energy_transition.png | 自由能景观与拓扑转变 |
 | Fig10 | Fig10_parameters_table.png | 参数汇总表 |
-
