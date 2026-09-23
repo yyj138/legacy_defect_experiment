@@ -1,13 +1,17 @@
 # legacy_defect_experiment
 
-复现论文 *Nature Communications 2025, 16:1148* 向列相液晶拓扑缺陷（分数斯格明子、双极子）实验，含连续介质模拟、缺陷生成、可视化与视频关键帧。
+复现论文 *Nature Communications 2025, 16:1148* 向列相液晶拓扑缺陷（分数斯格明子、双极子）实验，含连续介质模拟、缺陷生成、可视化与视频关键帧，以及基于 Mathematica 的斯格明子形态模拟。
 
-## 项目结构
+本项目为两套互补的复现方案：
+- **Python 仿真**（`main.py` / `src/`）：连续介质模拟、缺陷生成、可视化与视频分析
+- **Mathematica 模拟**（`src/skyrmion_simulation/`）：斯格明子形态的数值模拟与结果图
+
+## 目录结构
 
 ```
 .
 ├── README.md                  # 项目说明（本文件）
-├── main.py                    # 主脚本（交互式操作，15项功能菜单）
+├── main.py                    # Python 主脚本（交互式操作，15项功能菜单）
 ├── src/                       # 源代码目录
 │   ├── core/                  # 核心模块
 │   │   ├── defects.py         # 缺陷生成（分数斯格明子、双极子）
@@ -23,8 +27,28 @@
 │   ├── visualization/         # 可视化模块
 │   │   ├── visualization.py   # 缺陷可视化
 │   │   └── skyrmion_visualization.py  # 斯格明子可视化
-│   └── liquid_crystal/        # 液晶主模块（工具/CLI）
+│   ├── liquid_crystal/        # 液晶主模块（工具/CLI）
+│   └── skyrmion_simulation/   # Mathematica 斯格明子主程序与模块包
+│       ├── 主程序.nb / 主程序.m
+│       ├── 加载模块.m
+│       ├── 拓扑缺陷模块包.m
+│       ├── 液晶排列模式模块包.m
+│       ├── 可视化模块包.m
+│       ├── 数据分析模块包.m
+│       └── skyrmion.png
+│   ├── 四种典型斯格明子形态模拟.nb
+│   ├── 不同半斯格明子的自由能比较.nb
+│   └── 胶体取向角的时间近似演化.nb
+├── figures/                   # 斯格明子形态结果图（Mathematica 输出）
+│   ├── 四种液晶斯格明子指向矢排列模拟图/
+│   │   ├── Néel_Skyrmion.png
+│   │   ├── Anti_Skyrmion.png
+│   │   ├── Bimeron.png
+│   │   └── Bimeron_Reverse.png
+│   └── 四种斯格明子3d矢量图.png
 ├── examples/                  # 输出示例和结果
+│   ├── 分数斯格明子.png / 双极子.png
+│   ├── C_pattern.png / R_pattern.png / Uniform_pattern.png
 │   ├── *.png                  # 各种缺陷可视化结果
 │   ├── continuous_simulation/ # 连续介质模拟结果（Fig1-Fig10）
 │   └── keyframes/             # 视频关键帧（video_1/ ... video_11/）
@@ -34,7 +58,9 @@
     └── debug.log              # 调试日志
 ```
 
-## 环境要求
+## Python 仿真（main.py）
+
+### 环境要求
 
 - Python 3.8+
 - NumPy
@@ -42,13 +68,13 @@
 - SciPy
 - OpenCV (用于视频分析)
 
-## 安装依赖
+### 安装依赖
 
 ```bash
 pip install numpy matplotlib scipy opencv-python
 ```
 
-## 快速开始
+### 快速开始
 
 ```bash
 # 启动交互式界面（在仓库根目录运行）
@@ -57,7 +83,7 @@ python main.py
 
 > 注意：`main.py` 通过 `os.path.dirname(__file__)` 定位 `src/examples/videos`，请在仓库根目录运行。
 
-## 功能说明
+### 功能说明
 
 运行 `main.py` 后可选择以下15项功能：
 
@@ -86,7 +112,7 @@ python main.py
 - 连续介质模拟：`examples/continuous_simulation/`
 - 视频关键帧：`examples/keyframes/video_N/`
 
-## 实验复现步骤
+### 实验复现步骤
 
 1. 运行 `python main.py`
 2. 选择功能1-5生成基础缺陷结构
@@ -96,6 +122,30 @@ python main.py
 6. 使用功能14分析实验视频
 7. 结果保存在 `examples/` 目录
 
+## Mathematica 斯格明子模拟（src/skyrmion_simulation/）
+
+实现液晶斯格明子形态的数值模拟（Néel 斯格明子、反斯格明子 Anti-Skyrmion、双半子 Bimeron 等），六个 `.m` 模块包位于同一目录，`加载模块.m` 通过 `Get[...]` 相对引用同目录模块。
+
+### 运行方式
+
+Mathematica 脚本（`.nb` / `.m`）需使用 **Wolfram Mathematica** 打开并运行：
+
+```mathematica
+(* 打开 src/skyrmion_simulation/主程序.nb，或在工作目录内加载模块 *)
+Get["skyrmion_simulation/加载模块.m"]   (* 加载模块（需在 src/ 目录下） *)
+Get["skyrmion_simulation/主程序.m"]      (* 运行主程序 *)
+```
+
+> 注意：`.m` 模块包间的 `Get[...]` 引用为同目录相对引用，请在 `src/` 目录下运行，保持 `src/skyrmion_simulation/` 内部结构不变。
+
+### 内容说明
+
+- **src/skyrmion_simulation/**: Mathematica 主程序与模块包，实现液晶斯格明子形态的数值模拟。
+- **src/四种典型斯格明子形态模拟.nb**: 四种典型斯格明子形态的建模与可视化。
+- **src/不同半斯格明子的自由能比较.nb**: 不同半径下斯格明子自由能对比。
+- **src/胶体取向角的时间近似演化.nb**: 胶体取向角随时间演化的近似模拟。
+- **figures/**: 斯格明子形态结果图（Néel / Anti-Skyrmion / Bimeron / Bimeron_Reverse 指向矢排列模拟图及 3D 矢量图）。
+
 ## 参考资料
 
 - **论文**: Nature Communications, 2025, 16:1148
@@ -104,8 +154,9 @@ python main.py
 
 ## 分支说明
 
-- `roleA`：实验复现代码（当前分支）
-- `main`：仓库默认分支
+- `roleA`：向列相液晶拓扑缺陷的 Python 仿真主程序（main.py / src / examples / videos / docs）
+- `roleB`：斯格明子形态模拟（Mathematica）与可视化示例（src/skyrmion_simulation / figures）
+- `main`：合并后的默认分支（包含 roleA + roleB 全部内容）
 
 ## License / 说明
 
